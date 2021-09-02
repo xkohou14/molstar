@@ -59,8 +59,12 @@
             function $(id) { return document.getElementById(id); }
 
             var pdbId = '1grm', assemblyId= '1';
-            var url = 'https://www.ebi.ac.uk/pdbe/static/entry/' + pdbId + '_updated.cif';
-            var format = 'mmcif';
+            //var url = 'https://www.ebi.ac.uk/pdbe/static/entry/' + pdbId + '_updated.cif';
+            var url_prefix = 'http://127.0.0.1:1338/';
+            var url = url_prefix + 'examples/receptor.pdb';
+            var format = 'pdb';
+            assemblyId = 'deposited';
+            //var format = 'mmcif';
 
             $('url').value = url;
             $('url').onchange = function (e) { url = e.target.value; }
@@ -74,6 +78,23 @@
 
             addControl('Load Asym Unit', () => BasicMolStarWrapper.load({ url: url, format: format }));
             addControl('Load Assembly', () => BasicMolStarWrapper.load({ url: url, format: format, assemblyId: assemblyId }));
+
+
+            addControl('Load Example', () => {
+                var url = url_prefix + 'examples/receptor.pdb';
+                var url_ligand = url_prefix + 'examples/profile-lb.pdb';
+                var url_tunnel = url_prefix + 'examples/tunnel.pqr';
+                var format = 'pdb';
+
+                BasicMolStarWrapper.plugin.clear();
+                BasicMolStarWrapper.load({url: url_tunnel, format: format, assemblyId: "tunnel"});
+                BasicMolStarWrapper.load({url: url, format: format, assemblyId: "receptor-1" /*, structure: "coarse-surface"*/});
+                BasicMolStarWrapper.load({url: url_ligand, format: format, assemblyId: "ligand"});
+                BasicMolStarWrapper.toggleSpin();
+                BasicMolStarWrapper.toggleSpin();
+                BasicMolStarWrapper.toggleSpin();
+                BasicMolStarWrapper.toggleSpin();
+            });
 
             addSeparator();
 
